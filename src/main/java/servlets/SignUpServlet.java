@@ -45,12 +45,13 @@ public class SignUpServlet extends HttpServlet {
         String password = request.getParameter("password");
         User user = new User(firstName, lastName, email, password);
         if(dao.isUserRegistered(email)) {
-			out.println("Gia registrato!");
-			// Reindirizzare al login!
+			// Redirect to login
+        	response.sendRedirect("signin.jsp");
 		}else {
 			int userId = dao.addNewUser(user);
 	        if(userId > 0) {
-	            message = "User added successfully";
+	            // signUp ok redirect to signIn
+	        	response.sendRedirect("signin.jsp");
 	        }else{
 	            message = "User not added";
 	        }

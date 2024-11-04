@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import database.DAO;
 
@@ -26,7 +27,7 @@ public class SignInServlet extends HttpServlet {
      */
     public SignInServlet() {
         super();
-        // TODO Auto-generated constructor stub
+        dao = new DAO();
     }
     public void init(){
     	
@@ -40,8 +41,16 @@ public class SignInServlet extends HttpServlet {
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
 		if(!dao.isUserRegistered(email)) {
-			out.println("Mail inesistente!");
-			// redirect to signUp 
+			// mail don't exist redirect to signup
+			response.sendRedirect("signup.jsp"); 
+		}else {
+			if(dao.verifyCredentials(email, password)) {
+				HttpSession session = request.getSession();
+				session.setAttribute("email", email);
+				response.sendRedirect("products.jsp");
+			}else {
+				out.println("Password errata");
+			}
 		}
 	}
 }

@@ -82,7 +82,19 @@ public class DAO {
 			e.printStackTrace();
 		}
 		return res;
-        
     }
-    
+    public boolean verifyCredentials(String email, String password) {
+    	boolean res = false;
+		try {
+			 preparedStatement = getConnection().prepareStatement("SELECT email FROM users WHERE email = ? AND password = ?");
+			 preparedStatement.setString(1, email); 
+			 preparedStatement.setString(2, password);
+		     ResultSet resultSet = preparedStatement.executeQuery();
+		     return resultSet.next();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return res;
+    }
+   
 }
